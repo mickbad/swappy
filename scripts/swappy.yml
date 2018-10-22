@@ -1,0 +1,43 @@
+# ----------------------------------------------------------------------------------------------------------------------
+# - YaML configuration for swappy checker
+# ----------------------------------------------------------------------------------------------------------------------
+
+# configuration for swap alerting
+swap:
+  # percent alerting (float) **default = 50.0**
+  alert-limit: 20.0
+
+  # ordering for array in template (name, pid or swap)
+  order-by: swap
+
+  # reset swap if alert
+  reset-swap: True
+
+  # post process after alert
+  post-process-alert:
+    enable: True
+    commands:
+      # command list to after resetting
+      - apt update
+
+  # send email to adminsys
+  email:
+    enable: True
+    from: Alert Swap <my@email.com>
+    subject: Alert swap on this server for {dd}/{mm}/{yyyy} - {H}:{M}:{S}
+    to: my@email.com, my_another@email.com
+    template: |
+      <b>Alert swap detected:</b></br />
+      ➡️ <u>percent info</u>: {swap_percent} %<br />
+      ➡️ <u>list of pressure</u>:<br />
+      {swap_list}<br />
+      <br />
+      AdminSys<br />
+
+# SMTP Configuraiton
+smtp:
+  host: localhost
+  port: 25
+  tls: False
+  login:
+  password:
