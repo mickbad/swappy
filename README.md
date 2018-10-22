@@ -14,14 +14,14 @@ $ pip install swappy
 
 ```python
 # create automatic procedure
-from swappy import swapcheck_main
+from swappy.swappy import swapcheck_main
 config_pathname = "/path/to/config.yml"
 swapcheck_main(config_pathname,
                simulation=False,
                display_stdout=True)
 
 # personnal usage
-from swappy import SwapInfo
+from swappy.swappy import SwapInfo
 swap = SwapInfo()
 print(swap.swap_memory().percent) # percentage of swap
 print(swap.swap_total)            # total swap taken by system
