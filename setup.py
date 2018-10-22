@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import os
 from setuptools import setup, find_packages
 
 # import lib
@@ -15,7 +16,7 @@ setup(
     version=swappy.__version__,
 
     packages=find_packages(),
-    scripts=[join('scripts', 'swappy-check'), join('scripts', 'swappy.yml')],
+    scripts=[os.path.join('scripts', 'swappy-check'), os.path.join('scripts', 'swappy.yml')],
 
     author="MickBad",
     author_email="prog@mickbad.com",
