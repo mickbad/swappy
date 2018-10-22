@@ -30,7 +30,7 @@
 
 import sys
 from swappy import __version__
-from swappy import swapcheck_main, SwapInfo
+from swappy.swappy import swapcheck_main, SwapInfo
 from optparse import OptionParser, IndentedHelpFormatter
 
 

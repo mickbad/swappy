@@ -15,8 +15,9 @@ setup(
     name='swappy',
     version=swappy.__version__,
 
-    packages=find_packages(),
-    scripts=[os.path.join('scripts', 'swappy-check'), os.path.join('scripts', 'swappy.yml')],
+#    packages=find_packages(),
+    packages=["swappy"],
+    scripts=[os.path.join('scripts', 'swappy-check'), ],
 
     author="MickBad",
     author_email="prog@mickbad.com",
