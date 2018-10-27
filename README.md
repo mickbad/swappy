@@ -27,6 +27,7 @@ print(swap.swap_memory().percent) # percentage of swap
 print(swap.swap_total)            # total swap taken by system
 print(swap.count())               # total process found
 print(swap.swap_info_text("pid")) # display text/plain output ordering by pid
+print(swap.can_reset())           # can we reset swap with left memories?
 ```
 
 **Usage for scripting**

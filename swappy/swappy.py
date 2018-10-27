@@ -205,6 +205,24 @@ class SwapInfo:
         info = self.swap_memory()
         return info.percent >= alert_limit
 
+    # ------------------------------------------------------------------------------------------------------------------
+    def can_reset(self):
+        """
+        Check if swap can be resetting with current memories.
+        If no more left RAM, function returns False
+
+        :return: boolean
+        """
+        swapobject = psutil.swap_memory()
+        memobject = psutil.virtual_memory()
+        try:
+            if memobject.available > swapobject.used:
+                return True
+            return False
+
+        except:
+            return False
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 def bash(commandline, root=False):
@@ -260,12 +278,17 @@ def swapcheck_main(settings_pathname, simulation=False, display_stdout=False):
         print("- Swap alert: {:.2f}%".format(info_before.percent))
 
         # reset swap
+        reset_swap = False
         if settings.getEnable("/swap/reset-swap"):
             # execute commands for resetting swap
-            print("- Reset swap")
-            if not simulation:
+            if not simulation and swap.can_reset():
+                print("- Reset swap")
                 bash("swapoff -a", root=True)
                 bash("swapon -a", root=True)
+                reset_swap = True
+
+            else:
+                print("- Cannot reset swap: simulation or no more left memories")
 
             # post treatments
             if settings.getEnable("/swap/post-process-alert/enable"):
@@ -288,6 +311,11 @@ def swapcheck_main(settings_pathname, simulation=False, display_stdout=False):
                 swap_percent=info_before.percent,
                 swap_list=swap.swap_info_html(order_by=settings.get("/swap/order-by", "swap"))
             )
+
+            # adding "addons" :) if cannot reset swap
+            if not reset_swap:
+                body_text = "**Cannot reset swap: simulation or no more left memories**\n\n" + body_text
+                body = "<b>Cannot reset swap: simulation or no more left memories</b><br /><br />" + body
 
             # Email object
             email = FastEmail()
