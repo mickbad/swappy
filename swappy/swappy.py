@@ -213,9 +213,9 @@ class SwapInfo:
 
         :return: boolean
         """
-        swapobject = psutil.swap_memory()
-        memobject = psutil.virtual_memory()
         try:
+            swapobject = psutil.swap_memory()
+            memobject = psutil.virtual_memory()
             if memobject.available > swapobject.used:
                 return True
             return False
@@ -235,7 +235,7 @@ def bash(commandline, root=False):
     """
     commandline = commandline.strip()
     if commandline == "":
-        raise Exception("No command!".format(commandline))
+        raise Exception("No command given!")
 
     # check if root command
     if root and not os.geteuid() == 0:
@@ -280,12 +280,25 @@ def swapcheck_main(settings_pathname, simulation=False, display_stdout=False):
         # reset swap
         reset_swap = False
         if settings.getEnable("/swap/reset-swap"):
+            # pre treatments
+            if settings.getEnable("/swap/pre-process-alert/enable"):
+                # execute pre command
+                for command in settings.get("/swap/pre-process-alert/commands"):
+                    print("- Execute pre command: {} => ".format(command),
+                          end="", flush=True)
+                    ret = bash(command)
+                    print("ret: {}".format(ret))
+
             # execute commands for resetting swap
             if not simulation and swap.can_reset():
                 print("- Reset swap")
-                bash("swapoff -a", root=True)
-                bash("swapon -a", root=True)
-                reset_swap = True
+                try:
+                    bash("swapoff -a", root=True)
+                    bash("swapon -a", root=True)
+                    reset_swap = True
+
+                except Exception as e:
+                    print("  |_ {}".format(str(e)))
 
             else:
                 print("- Cannot reset swap: simulation or no more left memories")

@@ -52,8 +52,6 @@ swap pressure: 0.00%
 
 
 
-
-
 **Configuration**
 
 ```yaml
@@ -71,6 +69,14 @@ swap:
 
   # reset swap if alert
   reset-swap: True
+
+  # post process after alert
+  pre-process-alert:
+    enable: True
+    commands:
+      # command list to before resetting
+      - apt update
+      - ls -lF /tmp
 
   # post process after alert
   post-process-alert:
