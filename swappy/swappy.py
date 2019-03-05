@@ -209,7 +209,7 @@ class SwapInfo:
     def can_reset(self):
         """
         Check if swap can be resetting with current memories.
-        If no more left RAM, function returns False
+        If no more RAM, function returns False
 
         :return: boolean
         """
@@ -301,7 +301,7 @@ def swapcheck_main(settings_pathname, simulation=False, display_stdout=False):
                     print("  |_ {}".format(str(e)))
 
             else:
-                print("- Cannot reset swap: simulation or no more left memories")
+                print("- Cannot reset swap: simulation or no more memories")
 
             # post treatments
             if settings.getEnable("/swap/post-process-alert/enable"):
@@ -327,8 +327,8 @@ def swapcheck_main(settings_pathname, simulation=False, display_stdout=False):
 
             # adding "addons" :) if cannot reset swap
             if not reset_swap:
-                body_text = "**Cannot reset swap: simulation or no more left memories**\n\n" + body_text
-                body = "<b>Cannot reset swap: simulation or no more left memories</b><br /><br />" + body
+                body_text = "**Cannot reset swap: simulation or no more memories**\n\n" + body_text
+                body = "<b>Cannot reset swap: simulation or no more memories</b><br /><br />" + body
 
             # Email object
             email = FastEmail()
